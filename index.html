@@ -2,184 +2,125 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 💚</title>
+<title>For Mohammad 💚</title>
 
 <style>
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: black;
+    font-family: Arial;
+    background: linear-gradient(to right, #0f9d58, #34a853);
     color: white;
-    overflow: hidden;
-}
-
-/* Intro */
-#intro {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    animation: fadeOut 3s forwards 2s;
-}
-
-@keyframes fadeOut {
-    to {opacity: 0; visibility: hidden;}
-}
-
-/* Main */
-.container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     text-align: center;
 }
 
+/* كلمة السر */
+#loginBox {
+    margin-top: 20%;
+}
+
+/* الإدخال */
 input {
-    padding: 12px;
-    border-radius: 8px;
+    padding: 10px;
     border: none;
+    border-radius: 8px;
 }
 
 button {
     padding: 10px 20px;
-    border-radius: 8px;
     border: none;
-    background: #22c55e;
-    color: white;
+    border-radius: 8px;
+    background: white;
+    color: green;
     cursor: pointer;
 }
 
-/* Popup */
-#popup, #letter {
+/* المحتوى */
+#content {
     display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.8);
-    padding: 25px;
-    border-radius: 15px;
-    width: 320px;
-    text-align: center;
+    margin-top: 15%;
 }
 
-/* Hearts */
-.heart {
-    position: absolute;
-    color: #22c55e;
-    animation: float 4s linear infinite;
-}
-
-@keyframes float {
-    from {transform: translateY(100vh);}
-    to {transform: translateY(-10vh);}
-}
-
-/* Music button */
+/* زر الموسيقى */
 #musicBtn {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 20px;
 }
 
-/* Glow text */
-.glow {
-    color: #22c55e;
-    text-shadow: 0 0 10px #22c55e;
+/* الرسالة */
+#letter {
+    font-size: 60px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#message {
+    display: none;
+    margin: 20px;
+    font-size: 18px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="intro">For you... 💚</div>
-
-<div class="container">
-    <h2 class="glow">Enter the password</h2>
-    <input type="password" id="password">
-    <br><br>
-    <button onclick="checkPassword()">Unlock 💚</button>
+<!-- كلمة السر -->
+<div id="loginBox">
+    <h2>Enter Password 💚</h2>
+    <input type="password" id="pass">
+    <button onclick="checkPass()">Unlock</button>
 </div>
 
-<div id="popup">
-    <p>
+<!-- المحتوى -->
+<div id="content">
+    <h2>
     Now it's my turn to tell you,<br>
     "I have successfully discovered the password."
-    </p>
-    <h2 onclick="openLetter()" style="cursor:pointer;">💌</h2>
+    </h2>
+
+    <div id="letter" onclick="showMessage()">💌</div>
+
+    <div id="message">
+        I'm so sorry for what I did, and I hope to earn your trust again.
+        I truly love you. You're a wonderful person, and I don't want anything
+        between us to end or diminish; on the contrary, I want it to grow.
+        I know you said it's over, but I decided to do this because when you
+        did it, it gave me a truly wonderful feeling. You really mean a lot
+        to me; you're a big part of my life.
+    </div>
 </div>
 
-<div id="letter">
-    <p id="text"></p>
-</div>
+<!-- YouTube مخفي -->
+<iframe id="ytplayer" width="0" height="0"
+src="https://www.youtube.com/embed/jJPMnTXl63E?enablejsapi=1"
+frameborder="0" allow="autoplay"></iframe>
 
+<!-- زر تشغيل -->
 <button id="musicBtn" onclick="playMusic()">🎵</button>
 
-<audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
-
 <script>
-function checkPassword() {
-    let pass = document.getElementById("password").value;
-    if (pass === "naed") {
-        document.getElementById("popup").style.display = "block";
-        createHearts();
+function checkPass() {
+    var password = document.getElementById("pass").value;
+    if(password === "naed") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("content").style.display = "block";
     } else {
         alert("Wrong password");
     }
 }
 
-function openLetter() {
-    document.getElementById("letter").style.display = "block";
-    playMusic();
-    typeText();
+function showMessage() {
+    document.getElementById("message").style.display = "block";
 }
 
+/* تشغيل الأغنية */
 function playMusic() {
-    document.getElementById("audio").play();
-}
-
-/* Hearts everywhere */
-document.addEventListener("click", function(e) {
-    let heart = document.createElement("div");
-    heart.innerHTML = "💚";
-    heart.classList.add("heart");
-    heart.style.left = e.clientX + "px";
-    heart.style.top = e.clientY + "px";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 4000);
-});
-
-function createHearts() {
-    setInterval(() => {
-        let heart = document.createElement("div");
-        heart.innerHTML = "💚";
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(heart);
-    }, 300);
-}
-
-/* Typing effect */
-let message = `I'm so sorry for what I did, and I hope to earn your trust again. 
-I truly love you. You're a wonderful person, and I don't want anything between us to end or diminish; 
-on the contrary, I want it to grow. I know you said it's over, but I decided to do this because when you did it, 
-it gave me a truly wonderful feeling. You really mean a lot to me; you're a big part of my life.`;
-
-let i = 0;
-
-function typeText() {
-    let el = document.getElementById("text");
-    if (i < message.length) {
-        el.innerHTML += message.charAt(i);
-        i++;
-        setTimeout(typeText, 40);
-    }
+    var iframe = document.getElementById("ytplayer");
+    iframe.src += "&autoplay=1";
 }
 </script>
 
