@@ -8,27 +8,26 @@
 body {
     margin: 0;
     font-family: Arial;
-    background: linear-gradient(to right, #0f9d58, #34a853);
+    background: linear-gradient(135deg, #0f9d58, #14532d);
     color: white;
     text-align: center;
 }
 
-/* كلمة السر */
+/* صندوق كلمة السر */
 #loginBox {
     margin-top: 20%;
 }
 
-/* الإدخال */
 input {
     padding: 10px;
-    border: none;
     border-radius: 8px;
+    border: none;
 }
 
 button {
     padding: 10px 20px;
-    border: none;
     border-radius: 8px;
+    border: none;
     background: white;
     color: green;
     cursor: pointer;
@@ -51,17 +50,37 @@ button {
     font-size: 20px;
 }
 
-/* الرسالة */
+/* الإيموجي */
 #letter {
     font-size: 60px;
     cursor: pointer;
     margin-top: 20px;
 }
 
-#message {
+/* نافذة الرسالة */
+#popup {
     display: none;
-    margin: 20px;
-    font-size: 18px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 15px;
+    width: 320px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* خلفية معتمة */
+#overlay {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
 }
 </style>
 </head>
@@ -72,6 +91,7 @@ button {
 <div id="loginBox">
     <h2>Enter Password 💚</h2>
     <input type="password" id="pass">
+    <br><br>
     <button onclick="checkPass()">Unlock</button>
 </div>
 
@@ -82,29 +102,37 @@ button {
     "I have successfully discovered the password."
     </h2>
 
-    <div id="letter" onclick="showMessage()">💌</div>
+    <div id="letter" onclick="openPopup()">💌</div>
+</div>
 
-    <div id="message">
-        I'm so sorry for what I did, and I hope to earn your trust again.
-        I truly love you. You're a wonderful person, and I don't want anything
-        between us to end or diminish; on the contrary, I want it to grow.
-        I know you said it's over, but I decided to do this because when you
-        did it, it gave me a truly wonderful feeling. You really mean a lot
-        to me; you're a big part of my life.
-    </div>
+<!-- الخلفية -->
+<div id="overlay" onclick="closePopup()"></div>
+
+<!-- النافذة -->
+<div id="popup">
+    <p>
+    I'm so sorry for what I did, and I hope to earn your trust again.
+    I truly love you. You're a wonderful person, and I don't want anything
+    between us to end or diminish; on the contrary, I want it to grow.
+    I know you said it's over, but I decided to do this because when you
+    did it, it gave me a truly wonderful feeling. You really mean a lot
+    to me; you're a big part of my life.
+    </p>
+    <br>
+    <button onclick="closePopup()">Close 💚</button>
 </div>
 
 <!-- YouTube مخفي -->
 <iframe id="ytplayer" width="0" height="0"
-src="https://www.youtube.com/embed/jJPMnTXl63E?enablejsapi=1"
-frameborder="0" allow="autoplay"></iframe>
+src=""
+allow="autoplay"></iframe>
 
-<!-- زر تشغيل -->
+<!-- زر الموسيقى -->
 <button id="musicBtn" onclick="playMusic()">🎵</button>
 
 <script>
 function checkPass() {
-    var password = document.getElementById("pass").value;
+    let password = document.getElementById("pass").value;
     if(password === "naed") {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("content").style.display = "block";
@@ -113,14 +141,18 @@ function checkPass() {
     }
 }
 
-function showMessage() {
-    document.getElementById("message").style.display = "block";
+function openPopup() {
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("overlay").style.display = "block";
 }
 
-/* تشغيل الأغنية */
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+}
+
 function playMusic() {
-    var iframe = document.getElementById("ytplayer");
-    iframe.src += "&autoplay=1";
+    document.getElementById("ytplayer").src = "https://www.youtube.com/embed/jJPMnTXl63E?autoplay=1";
 }
 </script>
 
