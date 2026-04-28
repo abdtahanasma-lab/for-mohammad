@@ -6,81 +6,75 @@
 
 <style>
 body {
-    margin: 0;
+    margin:0;
     font-family: Arial;
-    background: linear-gradient(135deg, #0f9d58, #14532d);
-    color: white;
-    text-align: center;
+    background: linear-gradient(135deg,#0f9d58,#14532d);
+    color:white;
+    text-align:center;
 }
 
-/* صندوق كلمة السر */
-#loginBox {
-    margin-top: 20%;
+/* كلمة السر */
+#login {
+    margin-top:20%;
 }
 
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
+/* popup 1 */
+#popup1, #popup2, #overlay {
+    display:none;
+    position:fixed;
 }
 
-button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    background: white;
-    color: green;
-    cursor: pointer;
+#overlay {
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
 }
 
-/* المحتوى */
-#content {
-    display: none;
-    margin-top: 15%;
+.popup {
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:15px;
+    width:320px;
+    box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+/* ايموجي */
+#letter {
+    font-size:60px;
+    cursor:pointer;
+    display:none;
 }
 
 /* زر الموسيقى */
 #musicBtn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    font-size: 20px;
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    font-size:20px;
 }
 
-/* الإيموجي */
-#letter {
-    font-size: 60px;
-    cursor: pointer;
-    margin-top: 20px;
+input {
+    padding:10px;
+    border-radius:8px;
+    border:none;
 }
 
-/* نافذة الرسالة */
-#popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    color: black;
-    padding: 20px;
-    border-radius: 15px;
-    width: 320px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-/* خلفية معتمة */
-#overlay {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    top: 0;
-    left: 0;
+button {
+    padding:10px 20px;
+    border-radius:8px;
+    border:none;
+    background:white;
+    color:green;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -88,72 +82,97 @@ button {
 <body>
 
 <!-- كلمة السر -->
-<div id="loginBox">
+<div id="login">
     <h2>Enter Password 💚</h2>
     <input type="password" id="pass">
     <br><br>
-    <button onclick="checkPass()">Unlock</button>
-</div>
-
-<!-- المحتوى -->
-<div id="content">
-    <h2>
-    Now it's my turn to tell you,<br>
-    "I have successfully discovered the password."
-    </h2>
-
-    <div id="letter" onclick="openPopup()">💌</div>
+    <button onclick="check()">Unlock</button>
 </div>
 
 <!-- الخلفية -->
-<div id="overlay" onclick="closePopup()"></div>
+<div id="overlay"></div>
 
-<!-- النافذة -->
-<div id="popup">
-    <p>
-    I'm so sorry for what I did, and I hope to earn your trust again.
-    I truly love you. You're a wonderful person, and I don't want anything
-    between us to end or diminish; on the contrary, I want it to grow.
-    I know you said it's over, but I decided to do this because when you
-    did it, it gave me a truly wonderful feeling. You really mean a lot
-    to me; you're a big part of my life.
-    </p>
-    <br>
-    <button onclick="closePopup()">Close 💚</button>
+<!-- popup 1 -->
+<div id="popup1" class="popup">
+    <p id="typing1"></p>
+    <div id="letter" onclick="openMessage()">💌</div>
 </div>
 
-<!-- YouTube مخفي -->
-<iframe id="ytplayer" width="0" height="0"
-src=""
-allow="autoplay"></iframe>
+<!-- popup 2 -->
+<div id="popup2" class="popup">
+    <p id="typing2"></p>
+    <br>
+    <button onclick="closeAll()">Close 💚</button>
+</div>
 
-<!-- زر الموسيقى -->
+<!-- الموسيقى -->
+<iframe id="music" width="0" height="0" allow="autoplay"></iframe>
 <button id="musicBtn" onclick="playMusic()">🎵</button>
 
 <script>
-function checkPass() {
-    let password = document.getElementById("pass").value;
-    if(password === "naed") {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("content").style.display = "block";
-    } else {
+
+/* كلمة السر */
+function check(){
+    let p = document.getElementById("pass").value;
+    if(p==="naed"){
+        document.getElementById("login").style.display="none";
+        document.getElementById("overlay").style.display="block";
+        document.getElementById("popup1").style.display="block";
+        typeFirst();
+    }else{
         alert("Wrong password");
     }
 }
 
-function openPopup() {
-    document.getElementById("popup").style.display = "block";
-    document.getElementById("overlay").style.display = "block";
+/* النص الاول */
+let text1 = `Now it's my turn to tell you,
+"I have successfully discovered the password."`;
+let i=0;
+
+function typeFirst(){
+    if(i<text1.length){
+        document.getElementById("typing1").innerHTML += text1.charAt(i);
+        i++;
+        setTimeout(typeFirst,40);
+    }else{
+        document.getElementById("letter").style.display="block";
+    }
 }
 
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
+/* فتح الرسالة */
+let text2 = `I'm so sorry for what I did, and I hope to earn your trust again.
+I truly love you. You're a wonderful person, and I don't want anything between us to end or diminish;
+on the contrary, I want it to grow. I know you said it's over, but I decided to do this because when you did it,
+it gave me a truly wonderful feeling. You really mean a lot to me; you're a big part of my life.`;
+
+let j=0;
+
+function openMessage(){
+    document.getElementById("popup1").style.display="none";
+    document.getElementById("popup2").style.display="block";
+    typeSecond();
+    playMusic();
 }
 
-function playMusic() {
-    document.getElementById("ytplayer").src = "https://www.youtube.com/embed/jJPMnTXl63E?autoplay=1";
+function typeSecond(){
+    if(j<text2.length){
+        document.getElementById("typing2").innerHTML += text2.charAt(j);
+        j++;
+        setTimeout(typeSecond,40);
+    }
 }
+
+/* اغلاق */
+function closeAll(){
+    document.getElementById("popup2").style.display="none";
+    document.getElementById("overlay").style.display="none";
+}
+
+/* تشغيل الاغنية */
+function playMusic(){
+    document.getElementById("music").src="https://www.youtube.com/embed/jJPMnTXl63E?autoplay=1";
+}
+
 </script>
 
 </body>
